@@ -1,0 +1,28 @@
+{
+  "name": "raspifla",
+  "version": "1.0.0",
+  "description": "raspberry pi temperature tracker",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "start-server": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stavrogin/raspifla.git"
+  },
+  "author": "flavio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stavrogin/raspifla/issues"
+  },
+  "homepage": "https://github.com/stavrogin/raspifla#readme",
+  "dependencies": {
+    "ejs": "^2.7.1",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.3"
+  }
+}
