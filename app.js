@@ -15,4 +15,6 @@ app.use('/admin', adminRoutes);
 
 app.use(errorController.get404);
 
-app.listen(3000);
+// read from heroku env process
+console.log('Port: ' + process.env.PORT);
+app.listen(process.env.PORT || 3000);
