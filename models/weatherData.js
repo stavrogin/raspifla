@@ -29,12 +29,12 @@ class WeatherData {
             const daysBackMillis = 1000 * 60 * 60 * 24;
             const dateFrom = now - daysBackMillis;
             filter = {
-                datasource: 'postman',
+                datasource: 'app',
                 ts: {$gte: dateFrom}
             };
         } else {
             filter = {
-                datasource: 'postman'
+                datasource: 'app'
             }
         }
 
