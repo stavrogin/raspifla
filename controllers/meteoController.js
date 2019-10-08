@@ -1,22 +1,29 @@
 const WeatherData = require('../models/weatherData');
 
 exports.getWeatherData = (req, res, next) => {
-  res.setHeader('Content-Type', 'application/json');
-  res.status(200).json( {
-      datasourceId: 1,
-      temperature: 22,
-      pressure: 960,
-      height: 200
-    });
+  const daysBack = req.query.daysBack;
+  WeatherData.fetchAll(daysBack)
+  .then(results => {
+    res.json(results);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json('{"error": "Error in fetching data: " ' + err + '}');
+  });
 };
 
 exports.postWeatherData = (req, res, next) => {
-  res.setHeader('Content-Type', 'application/json');
   console.log(req.body);
+  const datasource = req.body.datasource;
   const temperature = req.body.temperature;
   const pressure = req.body.pressure;
   const altitude = req.body.altitude;
-  const weatherData = new WeatherData(temperature, pressure, altitude);
-  res.status(200).json( weatherData);
+  let ts = req.body.ts;
+  if (!ts) {
+    ts = Date.now();
+  }
+  const weatherData = new WeatherData(datasource, temperature, pressure, altitude, ts);
+  weatherData.save();
+  res.status(201).json(weatherData);
 };
 

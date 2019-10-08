@@ -7,6 +7,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+// include static resources in HTML (e.g.: js and css files)
+app.use(express.static(path.join(__dirname, 'static')));
 
 //import error controller
 const errorController = require('./controllers/errorController');
@@ -22,10 +24,13 @@ app.use('/admin', adminRoutes);
 const meteoRoutes = require('./routes/meteo');
 app.use('/meteo', meteoRoutes);
 
+const chartRoutes = require('./routes/chart');
+app.use('/chart', chartRoutes);
+
 app.use(errorController.get404);
 
 //Mongo DB
-const mongoConnect = require('./util/database');
+const mongoConnect = require('./util/database').mongoConnect;
 mongoConnect((client) => {
     console.log(client);
     // read from heroku env process

@@ -1,0 +1,84 @@
+<%- include('includes/head.ejs') %>
+
+    
+
+</head>
+<script src="js/Chart.bundle.min.js"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
+
+<body>
+    <%- include('includes/navigation.ejs') %>
+    <div style="width:90%;">
+        <canvas id="temperatues" class="chartjs" width="undefined" height="80%"></canvas>
+        <canvas id="pressures" class="chartjs" width="undefined" height="80%"></canvas>
+    </div>
+
+    <script>
+        const url_string = window.location.href;
+        const currentURL = new URL(url_string);
+        const daysBack = currentURL.searchParams.get("daysBack");
+        
+        let weatherDataURL;
+        if (daysBack == null) {
+            weatherDataURL = 'meteo/weatherdata';
+        } else {
+            weatherDataURL = 'weatherdata?daysBack='+daysBack;
+        }
+        let temperatures = [];
+        let pressures = [];
+        let timestamps = [];
+        $.ajax({
+          dataType: "json",
+          url: weatherDataURL,
+          success: function(jsonArray) {
+                $.each(jsonArray, function(index, json) {
+                    temperatures.push(json.temperature);
+                    pressures.push(json.pressure);
+                    timestamps.push(json.ts);
+                });
+                
+                new Chart($("#temperatues"),
+                    {
+                        "type":"line",
+                        "data":{
+                            "labels": timestamps,
+                            "datasets":[
+                                {
+                                 "label":"Temperatures",
+                                 "data": temperatures,
+                                 "fill":false,
+                                 "borderColor":"rgb(75, 192, 192)",
+                                 "lineTension":0.1
+                                 }
+                            ]
+                        },
+                        "options":{}
+                    }
+                );
+                
+                new Chart($("#pressures"),
+                    {
+                        "type":"line",
+                        "data":{
+                            "labels": timestamps,
+                            "datasets":[
+                                {
+                                 "label":"Pressures",
+                                 "data": pressures,
+                                 "fill":false,
+                                 "borderColor":"rgb(192, 192, 72)",
+                                 "lineTension":0.1
+                                 }
+                            ]
+                        },
+                        "options":{}
+                    }
+                );
+            }
+          }
+        );
+            
+        </script>
+        
+
+<%- include('includes/end.ejs') %>
