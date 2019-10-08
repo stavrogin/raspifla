@@ -29,9 +29,22 @@ const formatDate = (timestampFromEpoch) => {
   var minute = date.getMinutes();
   var second = date.getSeconds();
 
-  return day + '/' + month + '/' + year + ' ' + hour + ':' + minute + ':' + second;
+  return formatDateElemWithLeadingZero(day)
+        + '/' 
+        + formatDateElemWithLeadingZero(month)
+        + '/' 
+        + year 
+        + ' ' 
+        + formatDateElemWithLeadingZero(hour) 
+        + ':' 
+        + formatDateElemWithLeadingZero(minute) 
+        + ':' 
+        + formatDateElemWithLeadingZero(second);
 }
 
+const formatDateElemWithLeadingZero = (elem) => {
+  return (elem > 9 ? '' : '0') + elem;
+}
 
 exports.postWeatherData = (req, res, next) => {
   console.log(req.body);
