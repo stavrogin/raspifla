@@ -31,8 +31,13 @@ app.use('/chart', chartRoutes);
 app.use(errorController.get404);
 
 //Mongo DB
+const config = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  };
+
 mongoose
-    .connect('mongodb+srv://flavio:3fCDs5SLU0vXAxsk@cluster0-o9gnp.mongodb.net/raspifla?retryWrites=true&w=majority')
+    .connect('mongodb+srv://flavio:3fCDs5SLU0vXAxsk@cluster0-o9gnp.mongodb.net/raspifla?retryWrites=true&w=majority', config)
     .then(result => {
         app.listen(process.env.PORT || 3000);
     })
