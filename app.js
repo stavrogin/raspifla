@@ -1,6 +1,7 @@
 const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -30,13 +31,14 @@ app.use('/chart', chartRoutes);
 app.use(errorController.get404);
 
 //Mongo DB
-const mongoConnect = require('./util/database').mongoConnect;
-mongoConnect((client) => {
-    console.log(client);
-    // read from heroku env process
-    console.log('Port: ' + process.env.PORT);
-    app.listen(process.env.PORT || 3000);
-});
+mongoose
+    .connect('mongodb+srv://flavio:3fCDs5SLU0vXAxsk@cluster0-o9gnp.mongodb.net/raspifla?retryWrites=true&w=majority')
+    .then(result => {
+        app.listen(process.env.PORT || 3000);
+    })
+    .catch(err => {
+        console.log(err);
+    });
 
 
 
