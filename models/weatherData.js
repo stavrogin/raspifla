@@ -38,16 +38,13 @@ class WeatherData {
             }
         }
 
-        console.log(filter);
-
         const db = getDB();
         return db
             .collection('weatherData')
             .find(filter)
             .toArray()
-            .then(products => {
-                console.log(products);
-                return products;
+            .then(weatherData => {
+                return weatherData;
             })
             .catch(error => {
                 console.log(error);
