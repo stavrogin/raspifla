@@ -24,14 +24,17 @@
         } else {
             weatherDataURL = 'weatherdata?daysBack='+daysBack;
         }
-        let temperatures = [];
-        let pressures = [];
-        let timestamps = [];
+        const temperatures = [];
+        const pressures = [];
+        const timestamps = [];
         $.ajax({
           dataType: "json",
           url: weatherDataURL,
           success: function(jsonArray) {
-                $.each(jsonArray, function(index, json) {
+              
+                const jsonArrayObj = $.parseJSON(jsonArray);
+
+                $.each(jsonArrayObj, function(index, json) {
                     temperatures.push(json.temperature);
                     pressures.push(json.pressure);
                     timestamps.push(json.ts);
@@ -74,6 +77,7 @@
                         "options":{}
                     }
                 );
+                
             }
           }
         );

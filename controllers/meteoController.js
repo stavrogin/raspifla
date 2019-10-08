@@ -4,13 +4,34 @@ exports.getWeatherData = (req, res, next) => {
   const daysBack = req.query.daysBack;
   WeatherData.fetchAll(daysBack)
   .then(results => {
-    res.json(results);
+    const weatherDataList = [];
+    results.forEach(weatherData => {
+      weatherData.ts = formatDate(weatherData.ts);
+      delete weatherData._id;
+      delete weatherData.datasource;
+      weatherDataList.push(weatherData);
+    });
+    res.json(JSON.stringify(weatherDataList));
   })
   .catch(err => {
     console.log(err);
     res.status(500).json('{"error": "Error in fetching data: " ' + err + '}');
   });
 };
+
+const formatDate = (timestampFromEpoch) => {
+  const date = new Date(timestampFromEpoch);
+  var day = date.getDate();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
+
+  var hour = date.getHours();
+  var minute = date.getMinutes();
+  var second = date.getSeconds();
+
+  return day + '/' + month + '/' + year + ' ' + hour + ':' + minute + ':' + second;
+}
+
 
 exports.postWeatherData = (req, res, next) => {
   console.log(req.body);
