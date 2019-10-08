@@ -5,7 +5,7 @@ const WeatherDataPoint = require('../models/weatherDataPoint');
  */
 exports.getWeatherData = (req, res, next) => {
   const daysBack = req.query.daysBack;
-  const filter = buildFetchWeatherDataFilter('postman', daysBack);
+  const filter = buildFetchWeatherDataFilter('app', daysBack);
 
   WeatherDataPoint
     .find(filter)
