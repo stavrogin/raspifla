@@ -22,9 +22,17 @@ app.use('/admin', adminRoutes);
 const meteoRoutes = require('./routes/meteo');
 app.use('/meteo', meteoRoutes);
 
-
 app.use(errorController.get404);
 
-// read from heroku env process
-console.log('Port: ' + process.env.PORT);
-app.listen(process.env.PORT || 3000);
+//Mongo DB
+const mongoConnect = require('./util/database');
+mongoConnect((client) => {
+    console.log(client);
+    // read from heroku env process
+    console.log('Port: ' + process.env.PORT);
+    app.listen(process.env.PORT || 3000);
+});
+
+
+
+
