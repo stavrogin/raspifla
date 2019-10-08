@@ -11,7 +11,7 @@ exports.getWeatherData = (req, res, next) => {
       delete weatherData.datasource;
       weatherDataList.push(weatherData);
     });
-    res.json(JSON.stringify(weatherDataList));
+    res.json(weatherDataList);
   })
   .catch(err => {
     console.log(err);
