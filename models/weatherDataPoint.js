@@ -10,6 +10,10 @@ const weatherDataPointSchema = new Schema({
     ts: {
         type: Date, 
         required:true
+    },
+    formattedTS: {
+        type: String,
+        required: false
     }
 });
 

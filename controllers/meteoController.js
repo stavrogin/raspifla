@@ -9,13 +9,18 @@ exports.getWeatherData = (req, res, next) => {
 
   WeatherDataPoint
     .find(filter)
+    .sort({'ts': 'asc'})
     .then(results => {
       const weatherDataList = [];
-      results.forEach(weatherData => {
-        weatherData.ts = formatDate(weatherData.ts);
-        delete weatherData._id;
-        delete weatherData.datasource;
-        weatherDataList.push(weatherData);
+      results.forEach(weatherDataPoint => {
+        let detachedWeatherDataPoint = weatherDataPoint.toObject();
+        const formattedTS = formatDate(detachedWeatherDataPoint.ts);
+        detachedWeatherDataPoint.formattedTS = formattedTS;
+        delete detachedWeatherDataPoint.ts;
+        delete detachedWeatherDataPoint.__v;
+        delete detachedWeatherDataPoint._id;
+        delete detachedWeatherDataPoint.datasource;
+        weatherDataList.push(detachedWeatherDataPoint);
       });
       res.json(weatherDataList);
     })

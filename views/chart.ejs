@@ -35,7 +35,7 @@
                 $.each(jsonArray, function(index, json) {
                     temperatures.push(json.temperature);
                     pressures.push(json.pressure);
-                    timestamps.push(json.ts);
+                    timestamps.push(json.formattedTS);
                 });
                 
                 new Chart($("#temperatues"),
