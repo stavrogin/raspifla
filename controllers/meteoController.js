@@ -3,31 +3,32 @@ const WeatherDataPoint = require('../models/weatherDataPoint');
 /**
  * Retrieves all the weather data eventaully gathered from some days back
  */
-exports.getWeatherData = (req, res, next) => {
+exports.getWeatherData = async (req, res, next) => {
   const daysBack = req.query.daysBack;
   const filter = buildFetchWeatherDataFilter('app', daysBack);
 
-  WeatherDataPoint
-    .find(filter)
-    .sort({'ts': 'asc'})
-    .then(results => {
-      const weatherDataList = [];
-      results.forEach(weatherDataPoint => {
-        let detachedWeatherDataPoint = weatherDataPoint.toObject();
-        const formattedTS = formatDate(detachedWeatherDataPoint.ts);
-        detachedWeatherDataPoint.formattedTS = formattedTS;
-        delete detachedWeatherDataPoint.ts;
-        delete detachedWeatherDataPoint.__v;
-        delete detachedWeatherDataPoint._id;
-        delete detachedWeatherDataPoint.datasource;
-        weatherDataList.push(detachedWeatherDataPoint);
-      });
-      res.json(weatherDataList);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json('{"error": "Error in fetching data: " ' + err + '}');
+  try {
+    const results = await WeatherDataPoint
+      .find(filter)
+      .sort({ 'ts': 'asc' });
+
+    const weatherDataList = [];
+    results.forEach(weatherDataPoint => {
+      let detachedWeatherDataPoint = weatherDataPoint.toObject();
+      const formattedTS = formatDate(detachedWeatherDataPoint.ts);
+      detachedWeatherDataPoint.formattedTS = formattedTS;
+      delete detachedWeatherDataPoint.ts;
+      delete detachedWeatherDataPoint.__v;
+      delete detachedWeatherDataPoint._id;
+      delete detachedWeatherDataPoint.datasource;
+      weatherDataList.push(detachedWeatherDataPoint);
     });
+    res.json(weatherDataList);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json('{"error": "Error in fetching data: " ' + err + '}');
+  }
+
 };
 
 /**
@@ -43,10 +44,10 @@ exports.postWeatherData = (req, res, next) => {
     ts = Date.now();
   }
   const weatherDataPoint = new WeatherDataPoint({
-    datasource: datasource, 
-    temperature: temperature, 
-    pressure: pressure, 
-    altitude: altitude, 
+    datasource: datasource,
+    temperature: temperature,
+    pressure: pressure,
+    altitude: altitude,
     ts: ts
   });
 
@@ -77,17 +78,17 @@ const formatDate = (timestampFromEpoch) => {
   var second = date.getSeconds();
 
   return formatDateElemWithLeadingZero(day)
-        + '/' 
-        + formatDateElemWithLeadingZero(month)
-        + '/' 
-        + year 
-        + ' ' 
-        + formatDateElemWithLeadingZero(hour) 
-        + ':' 
-        + formatDateElemWithLeadingZero(minute) 
-        + ':' 
-        + formatDateElemWithLeadingZero(second);
-}
+    + '/'
+    + formatDateElemWithLeadingZero(month)
+    + '/'
+    + year
+    + ' '
+    + formatDateElemWithLeadingZero(hour)
+    + ':'
+    + formatDateElemWithLeadingZero(minute)
+    + ':'
+    + formatDateElemWithLeadingZero(second);
+};
 
 /**
  * Adds a leading zero to a date field (e.g.: month 3 becomes 03)
@@ -95,7 +96,7 @@ const formatDate = (timestampFromEpoch) => {
  */
 const formatDateElemWithLeadingZero = (elem) => {
   return (elem > 9 ? '' : '0') + elem;
-}
+};
 
 /**
  * Builds mongoose data filter to retrieve weather data
@@ -109,16 +110,16 @@ const buildFetchWeatherDataFilter = (datasource, daysBack) => {
     };
     return filter;
   }
-  
+
   const now = Date.now();
   const daysBackMillis = 1000 * 60 * 60 * 24;
   const dateFrom = now - daysBackMillis;
   filter = {
-      datasource: datasource,
-      ts: {$gte: dateFrom}
+    datasource: datasource,
+    ts: { $gte: dateFrom }
   };
   return filter;
-}
+};
 
 
 
