@@ -72,7 +72,7 @@ const buildFetchWeatherDataFilter = (datasource, daysBack) => {
     }
 
     const now = Date.now();
-    const daysBackMillis = 1000 * 60 * 60 * 24;
+    const daysBackMillis = 1000 * 60 * 60 * 24 * daysBack;
     const dateFrom = now - daysBackMillis;
     filter = {
         datasource: datasource,
