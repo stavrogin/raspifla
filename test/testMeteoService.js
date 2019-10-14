@@ -20,7 +20,7 @@ describe('Test meteo service', () => {
 
             mongoose.connect('mongodb://localhost/mockDB', config, (err) => {
 
-            // load data from JSON (points dated 12 oct)
+                // load data from JSON (points dated 12 October 2019)
                 const mockFile = path.join(__dirname, 'mock', 'mockedWeatherDataPoints.json');
                 const mockedWeatherDataPoints = fs.readFileSync(mockFile);
                 const points = JSON.parse(mockedWeatherDataPoints);
@@ -29,8 +29,8 @@ describe('Test meteo service', () => {
                     const weatherDataPoint = new WeatherDataPoint(points[index]);
                     weatherDataPoint.save();
                 }
-            
-            // add 1 point dated today
+
+                // add 1 point dated today
                 const now = new Date();
                 const weatherDataPoint = new WeatherDataPoint({
                     datasource: 'app',
@@ -95,6 +95,16 @@ describe('Test meteo service', () => {
             done();
             throw err;
         });
+    });
+
+    it("Should properly add a new weather data point", async () => {
+        //not passing done since I am using async-await and I already return a promise
+        const weatherDataPoints = await meteoService.getWeatherData('app');
+        await meteoService.postWeatherData('app', 25, 1000, 200, new Date());
+        
+        const weatherDataPointsNew = await meteoService.getWeatherData('app');
+
+        expect(weatherDataPoints.length + 1).to.equal(weatherDataPointsNew.length);
     });
 
 });

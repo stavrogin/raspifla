@@ -37,7 +37,7 @@ exports.getWeatherData = async (dataSource, daysBack) => {
 /**
  * Saves a weather data point coming from request body
  */
-exports.postWeatherData = (datasource, temperature, pressure, altitude, ts) => {
+exports.postWeatherData = async (datasource, temperature, pressure, altitude, ts) => {
     const weatherDataPoint = new WeatherDataPoint({
         datasource: datasource,
         temperature: temperature,
@@ -46,16 +46,13 @@ exports.postWeatherData = (datasource, temperature, pressure, altitude, ts) => {
         ts: ts
     });
 
-    weatherDataPoint
-        .save()
-        .then(result => {
-            console.log('Created weather data with ts: ' + ts);
-            return result;
-        })
-        .catch(err => {
-            console.log(err);
-            throw err;
-        });
+    try {
+        const result = await weatherDataPoint.save();
+        return result;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
 };
 
 /**
