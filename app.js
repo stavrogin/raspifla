@@ -34,7 +34,7 @@ app.use(errorController.get404);
 const config = {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-  };
+};
 
 mongoose
     .connect('mongodb+srv://flavio:3fCDs5SLU0vXAxsk@cluster0-o9gnp.mongodb.net/raspifla?retryWrites=true&w=majority', config)

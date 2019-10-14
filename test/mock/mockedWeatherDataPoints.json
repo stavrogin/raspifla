@@ -1,0 +1,37 @@
+[
+    {
+        "temperature": 22.1,
+        "pressure": 989.95,
+        "altitude": 59.146441668679564,
+        "datasource": "app",
+        "ts": 1570885039000
+    },
+    {
+        "temperature": 22.2,
+        "pressure": 990.04,
+        "altitude": 59.82184905735194,
+        "datasource": "app",
+        "ts": 1570885040000
+    },
+    {
+        "temperature": 22.2,
+        "pressure": 990.04,
+        "altitude": 58.54545765381174,
+        "datasource": "app",
+        "ts": 1570885041000
+    },
+    {
+        "temperature": 22.2,
+        "pressure": 990.06,
+        "altitude": 59.139897804212005,
+        "datasource": "app",
+        "ts": 1570885042000
+    },
+    {
+        "temperature": 22.2,
+        "pressure": 990.06,
+        "altitude": 59.139897804212005,
+        "datasource": "postman",
+        "ts": 1570885043000
+    }
+]
