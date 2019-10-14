@@ -8,8 +8,10 @@ exports.getWeatherData = async (req, res, next) => {
   try {
     const weatherDataList = await meteoService.getWeatherData('app', daysBack);
     res.json(weatherDataList);
+    return;
   } catch (err) {
     res.status(500).json('{"error": "Error in fetching data: " ' + err + '}');
+    return err;
   }
 };
 

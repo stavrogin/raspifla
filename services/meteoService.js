@@ -28,7 +28,6 @@ exports.getWeatherData = async (dataSource, daysBack) => {
         return weatherDataList;
 
     } catch (err) {
-        console.log(err);
         throw err;
     }
 
