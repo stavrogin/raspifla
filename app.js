@@ -28,6 +28,29 @@ app.use('/meteo', meteoRoutes);
 const chartRoutes = require('./routes/chart');
 app.use('/chart', chartRoutes);
 
+//graphql
+const graphqlHttp = require('express-graphql');
+const graphqlSchema = require('./graphql/schema');
+const graphqlResolver = require('./graphql/resolvers');
+
+app.use(
+  '/graphql',
+  graphqlHttp({
+    schema: graphqlSchema,
+    rootValue: graphqlResolver,
+    graphiql: true,
+    customFormatErrorFn(err) {
+      if (!err.originalError) {
+        return err;
+      }
+      const data = err.originalError.data;
+      const message = err.message || 'An error occurred.';
+      const code = err.originalError.code || 500;
+      return { message: message, status: code, data: data };
+    }
+  })
+);
+
 app.use(errorController.get404);
 
 //Mongo DB

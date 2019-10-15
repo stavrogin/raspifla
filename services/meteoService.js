@@ -14,15 +14,9 @@ exports.getWeatherData = async (dataSource, daysBack) => {
 
         const weatherDataList = [];
         results.forEach(weatherDataPoint => {
-            let detachedWeatherDataPoint = weatherDataPoint.toObject();
-            const formattedTS = formatDate(detachedWeatherDataPoint.ts);
-            detachedWeatherDataPoint.formattedTS = formattedTS;
-            //remove unnecessary fields from json response
-            delete detachedWeatherDataPoint.ts;
-            delete detachedWeatherDataPoint.__v;
-            delete detachedWeatherDataPoint._id;
-            delete detachedWeatherDataPoint.datasource;
-            weatherDataList.push(detachedWeatherDataPoint);
+            const formattedTS = formatDate(weatherDataPoint.ts);
+            weatherDataPoint.formattedTS = formattedTS;
+            weatherDataList.push(weatherDataPoint);
         });
 
         return weatherDataList;
@@ -47,6 +41,8 @@ exports.postWeatherData = async (datasource, temperature, pressure, altitude, ts
 
     try {
         const result = await weatherDataPoint.save();
+        const formattedTS = formatDate(result.ts);
+        result.formattedTS = formattedTS;
         return result;
     } catch (err) {
         console.log(err);
